@@ -47,6 +47,9 @@ dev_dependencies:
 
   url_launcher: ^6.0.2
   video_player: ^2.1.1
+  auto_orientation: ^2.2.1
+  common_utils: ^2.1.0
+#  screen: ^0.0.5
   shared_preferences: ^2.0.4
   flutter_webview_plugin: ^0.4.0
 #  jpush_flutter: ^2.1.2

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ykt/ykt/config/color.dart';
 import 'package:flutter_ykt/ykt/pages/course_learn_page.dart';
+import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
 import 'package:flutter_ykt/ykt/util/dynamic_util.dart';
 import 'package:flutter_ykt/ykt/util/time_util.dart';
+import 'package:provider/provider.dart';
 
 class LearnFragItemLV1 extends StatelessWidget {
   int index;
@@ -22,7 +24,7 @@ class LearnFragItemLV1 extends StatelessWidget {
         Row(children: [
           Container(
             color: Colors.blue,
-            margin: EdgeInsets.only(right: 8),
+            margin: const EdgeInsets.only(right: 8),
             width: 4,
             height: 16,
           ),
@@ -30,7 +32,7 @@ class LearnFragItemLV1 extends StatelessWidget {
             "第${index + 1}讲:" + (lecture[index]['name']??""),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: TextStyle(
+            style: const TextStyle(
                 color: KColor.black44,
                 fontWeight: FontWeight.bold,
                 fontSize: 16),
@@ -48,26 +50,24 @@ class LearnFragItemLV1 extends StatelessWidget {
           .map((item) => InkWell(
                 onTap: () => {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CourseLearnPage(
-                      cert_id: cert_id,
-                      isAudition: false,
-                      isContinue: false,
-                    );
+                    return MultiProvider(providers: [ChangeNotifierProvider(create: (_) => LoginState())],
+                    child:CourseLearnPage( false, false,cert_id
+                    ));
                   }))
                 },
                 child: Container(
                   height: 65,
-                  padding: EdgeInsets.only(left: 12, right: 12),
+                  padding: const EdgeInsets.only(left: 12, right: 12),
                   // decoration: ,
                   child: Row(
                     //lecture item
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(right: 12),
+                        padding: const EdgeInsets.only(right: 12),
                         child: Text(
                           '${index + 1}-${courseList.indexOf(item) + 1}',
-                          style: TextStyle(fontSize: 15, color: KColor.garyA1),
+                          style: const TextStyle(fontSize: 16, color: KColor.garyA1),
                         ),
                       ),
                       Expanded(
@@ -105,7 +105,7 @@ class LearnFragItemLV1 extends StatelessWidget {
                             child: const Text(
                               '继续学习',
                               style: TextStyle(
-                                  color: KColor.primaryColor, fontSize: 13),
+                                  color: KColor.primaryColor, fontSize: 12),
                             ),
                           ))
                     ],
@@ -117,7 +117,7 @@ class LearnFragItemLV1 extends StatelessWidget {
   }
 
   Widget _getSubInfo(item) {
-    var style = TextStyle(fontSize: 13, color: KColor.garyA1);
+    var style = const TextStyle(fontSize: 12, color: KColor.garyA1);
     if (null == item['learn_rate']) {
       return Text(
         TimeUtil.durationTransform(Util.safeGetInt(item, 'video_duration')),

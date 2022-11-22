@@ -2,8 +2,11 @@
 
 class Util{
    static safeGetInt(dynamic obj,String key){
-    String target = obj[key];
-    if(target.isEmpty){
+    dynamic target = obj[key];
+    if(target is int){
+      return target;
+    }
+    if(null==target||target.isEmpty){
       return -1;
     }
     return int.parse(target);

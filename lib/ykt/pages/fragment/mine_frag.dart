@@ -1,16 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_ykt/ykt/config/http_conf.dart';
+import 'package:flutter_ykt/common/widgets/custom_appbar.dart';
 import 'package:flutter_ykt/ykt/pages/setting_page.dart';
 import 'package:flutter_ykt/ykt/util/ui_util.dart';
 import 'package:provider/provider.dart';
-import '../../../main.dart';
 import '../../service/http_service.dart';
 
 import '../../model/menu.dart';
-import '../../../custom/widgets/custom_appbar.dart';
-import '../../Nav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -56,9 +52,9 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
     super.build(context);
     return Scaffold(
       appBar: CustomAppbar(
-        leadingWidget: Icon(Icons.message),
+        leadingWidget: const Icon(Icons.message),
         trailingWidget: InkWell(
-          child: Icon(Icons.settings),
+          child: const Icon(Icons.settings),
           onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return SettingPage(info);
@@ -83,7 +79,7 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
   }
 
   Widget infoCard() {
-    return Container(
+    return SizedBox(
       height: 200,
       child: Stack(
         children: <Widget>[Image.asset('images/ic_right_arrow_gary.png')],
@@ -98,8 +94,8 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
       physics: const NeverScrollableScrollPhysics(), //禁止滑动
       itemBuilder: (context, index) {
         return Container(
-          height: 40,
-          padding: EdgeInsets.only(left: 12, right: 6),
+          height: 56,
+          padding: const EdgeInsets.only(left: 12, right: 6),
           child: Stack(
             children: <Widget>[
               Align(
@@ -113,7 +109,7 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
 //                          height: 32,
 //                        child: Image.asset(menus[index].icon),
 //                        ),
-                    Text(menus[index].name),
+                    Text(menus[index].name,style: const TextStyle(fontSize: 16),),
                     Container(
                       width: 4,
                     ),
@@ -123,7 +119,7 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
                       child: Container(
                         width: 8,
                         height: 8,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.all(Radius.circular(4.0)),
 //                          borderRadius: BorderRadiusGeometry.lerp(a, b, t)
@@ -132,7 +128,7 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
                     ),
                     Expanded(child: nullableText(menus[index].info)),
                     Container(
-                      padding: EdgeInsets.only(left: 8),
+                      margin: const EdgeInsets.only(left: 8,right: 8),
                       width: 12,
                       height: 12,
                       child: Image.asset("images/ic_right_arrow_gary.png"),
@@ -151,54 +147,62 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
     );
   }
 
+  static const TextStyle points = TextStyle(
+    fontWeight: FontWeight.bold,
+      fontSize: 18
+  );
+
+  static const TextStyle des = TextStyle(
+      color: Colors.grey,
+      fontSize: 12
+  );
   Widget createHeader(dynamic data) {
 //    var pic=data['userpic'];
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(left: 18, top: 24, bottom: 12),
-                  child: CircleAvatar(
-                    backgroundImage: new NetworkImage(placeHolder(data, 'thumb'))
-                  )),
-              Text(placeHolder(data, 'user_name'))
-            ],
-          ),
+    return Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Container(
+                margin: const EdgeInsets.only(left: 18, top: 24, bottom: 12,right: 12),
+                child: CircleAvatar(
+                  radius: 36,
+                  backgroundImage: NetworkImage(placeHolder(data, 'thumb'))
+                )),
+            Text(placeHolder(data, 'user_name'),style: const TextStyle(fontSize: 20),)
+          ],
+        ),
 //          Card(
 //            margin: const EdgeInsets.only(left: 12,right: 12),
 //            child:
-          Container(
-            padding: const EdgeInsets.only(top: 12, bottom: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text(placeHolder(data, 'credit')),
-                    Text('学分')
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(placeHolder(data, 'credit_rank')),
-                    Text('积分排行榜')
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(placeHolder(data, 'favorite_num')),
-                    Text('收藏')
-                  ],
-                )
-              ],
-            ),
+        Container(
+          padding: const EdgeInsets.only(top: 12, bottom: 12),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Text(placeHolder(data, 'credit'),style: points,),
+                  const Text('学分',style: des,)
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Text(placeHolder(data, 'credit_rank'),style: points,),
+                  const Text('积分排行榜',style: des,)
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Text(placeHolder(data, 'favorite_num'),style: points,),
+                  const Text('收藏',style: des,)
+                ],
+              )
+            ],
           ),
+        ),
 //          ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -218,14 +222,9 @@ class _MinePageState extends State<MinePage> with AutomaticKeepAliveClientMixin{
            future: post(context,'getMineInfo', formData: {'user_ticket': token}),
            builder: (context, snapshot) {
              if (snapshot.hasData) {
-               var rep = json.decode(snapshot.data.toString());
-               if (hasError(context,root: rep)) {
-                 return createHeader(null);
-               } else {
+                 var rep = json.decode(snapshot.data.toString());
                  info = rep['data'];
-//                        return Text('请求成功');
                  return createHeader(info);
-               }
              } else {
                return createHeader(null);
              }

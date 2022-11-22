@@ -142,7 +142,6 @@ class _PuzzleState extends State<Puzzle> with SingleTickerProviderStateMixin {
       }
     });
     widget.inputStream.listen((event) {
-      print(event);
       if (event == a + b) {
         reset();
         widget.scoreStream.add(5);

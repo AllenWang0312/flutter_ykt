@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter_ykt/ykt/config/http_conf.dart';
 import 'package:flutter_ykt/ykt/pages/index_page.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../main.dart';
 import '../config/color.dart';
 import '../service/http_service.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +106,6 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       var account = account_controller.text;
                       var psw = psw_controller.text;
-                      print(account + psw);
                       if (account.isNotEmpty && psw.isNotEmpty) {
                         login(context, account, psw);
                       } else {
@@ -154,17 +151,10 @@ class _LoginPageState extends State<LoginPage> {
       'type': 1,
       'device_type': '4'
     }).then((snapshot) {
-      var value = json.decode(snapshot.toString());
-
-      if(!hasError(context,root: value)){
-        // var errCode = value['errCode'];
-        // var msg = value['msg'];
-        print(value);
+        var value = json.decode(snapshot.toString());
         String token = value['data']['user_ticket'];
         context.read<LoginState>().loginSuccess(token);
         onLoginSuccess(value['data'],token);
-      }
-
     });
   }
 

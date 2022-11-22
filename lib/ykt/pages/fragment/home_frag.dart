@@ -1,27 +1,25 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_ykt/ykt/Nav.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_ykt/common/widgets/banner.dart';
+import 'package:flutter_ykt/common/widgets/custom_appbar.dart';
 import 'package:flutter_ykt/ykt/pages/cert_detial.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
-import 'package:flutter_ykt/ykt/pages/webview_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../custom/widgets/banner.dart';
-import '../../../custom/widgets/custom_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../main.dart';
 import '../../config/index.dart';
 import '../../service/http_service.dart';
 import '../../config/color.dart';
 
 class HomePage extends StatefulWidget {
   int? class_id = 0;
-  String class_name;
+  String? class_name;
 
-  HomePage({super.key, required this.class_id, required this.class_name});
+  HomePage({super.key, this.class_id, this.class_name});
 
   Future<int?> getClassId() async {
     if (class_id == 0) {
@@ -75,9 +73,10 @@ class _HomePageState extends State<HomePage>
             child: const Text("更多",
                 style: TextStyle(fontSize: 14, color: Colors.black38)),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return WebViewPage(title: '更多', url: KString.MORE);
-              }));
+              openNativeWebView(KString.MORE);
+              // Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //   return WebViewPage(title: '更多', url: KString.MORE);
+              // }));
             },
           ),
         ),
@@ -305,6 +304,10 @@ class _HomePageState extends State<HomePage>
     );
     isChangging =false;
     return result;
+  }
+  static const platform = const MethodChannel('flutter.open.native.page');
+  Future<Null> openNativeWebView(String url) async {
+    final String result = await platform.invokeMethod("edu.tjrac.swant.WebActivity",{'url':url});
   }
 
 // Future<void> initList() async {

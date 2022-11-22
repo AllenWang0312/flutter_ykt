@@ -8,7 +8,6 @@ import 'package:flutter_ykt/ykt/util/time_util.dart';
 class CourseLearnItemLV1 extends StatefulWidget {
   int index;
   String cert_id;
-
   Function itemChildClickListener;
   dynamic lecture;
 
@@ -38,7 +37,7 @@ class LectureState extends State<CourseLearnItemLV1> {
         Row(children: [
           Container(
             color: Colors.blue,
-            margin: EdgeInsets.only(right: 8),
+            margin: const EdgeInsets.only(right: 8),
             width: 4,
             height: 16,
           ),
@@ -46,7 +45,7 @@ class LectureState extends State<CourseLearnItemLV1> {
             "第${widget.index + 1}讲:" + widget.lecture['name'],
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: TextStyle(
+            style: const TextStyle(
                 color: KColor.black44,
                 fontWeight: FontWeight.bold,
                 fontSize: 16),
@@ -88,6 +87,7 @@ class LectureState extends State<CourseLearnItemLV1> {
   }
 
   Widget _courseItem(item, int index, int subIndex, Function childClick) {
+    String course_id = item['course_id'];
     List<dynamic> details = item['detail'];
     var itemExtent=(MediaQuery.of(context).size.width-48)/2.5;
     return Column(
@@ -95,20 +95,19 @@ class LectureState extends State<CourseLearnItemLV1> {
       children: [
         _courseTitle('${index + 1}-${subIndex + 1}', item['title']),
         Container(
-          margin: EdgeInsets.fromLTRB(24, 8, 24, 0),
+          margin: const EdgeInsets.fromLTRB(24, 8, 24, 0),
           height: 60,
           // padding: EdgeInsets.fromLTRB(24, 0, 24, 4),
           child: ListView.builder(
             itemExtent: itemExtent,
             //强制item大小 便于listview 滑动预判
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.only(bottom: 14),
+            padding: const EdgeInsets.only(bottom: 14),
             itemBuilder: (context, index) {
               dynamic item = details[index];
-              print(item);
               return InkWell(//course_learn_item_lv3
                 onTap: () {
-                  childClick.call(item);
+                  childClick.call(course_id,item);
                 },
                 child: detail(item['title'], item['id']),
               );
@@ -129,7 +128,7 @@ class LectureState extends State<CourseLearnItemLV1> {
             padding: const EdgeInsets.only(right: 12),
             child: Text(
               order,
-              style: TextStyle(fontSize: 15, color: KColor.garyA1),
+              style: const TextStyle(fontSize: 15, color: KColor.garyA1),
             ),
           ),
           Expanded(
@@ -142,7 +141,7 @@ class LectureState extends State<CourseLearnItemLV1> {
                   title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: KColor.black30),
@@ -155,18 +154,18 @@ class LectureState extends State<CourseLearnItemLV1> {
 
   Widget detail(String title, String id) {
     return Container(
-      padding: EdgeInsets.only(left: 4, right: 4),
-      margin: EdgeInsets.only(left: 4, right: 4),
+      padding: const EdgeInsets.only(left: 4, right: 4),
+      margin: const EdgeInsets.only(left: 4, right: 4),
       decoration: BoxDecoration(
         color: CourseLearnStateWidget.of(context).playing_id == id
             ? Colors.blue[200]
             : Colors.grey[200],
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(4.0)),
       ),
       alignment: Alignment.center,
       child: Text(
         title,
-        style: TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 14),
         maxLines: 2,
       ),
     );

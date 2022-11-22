@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ykt/main.dart';
 import 'package:flutter_ykt/ykt/pages/login_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import '../config/http_conf.dart';
+import '../pages/state/login_state_provider.dart';
 
 Future<Response?> get(context, key, {formData}) async {
   try {
     Response response;
-    Dio dio = new Dio(baseOptions());
+    Dio dio = Dio(baseOptions());
     // dio.options.contentType = ResponseType.json.toString();
     addProxy(dio);
 
@@ -25,7 +27,7 @@ Future<Response?> get(context, key, {formData}) async {
     } else {
       response = await dio.get(servicePath[key]!, queryParameters: formData);
       if (kDebugMode) {
-        print("get:${formData}");
+        print("get:$formData");
       }
     }
     return handleResponse(response, context);
@@ -60,26 +62,25 @@ Future<Response?> post(context, key, {formData}) async {
     return handleResponse(response, context);
   } catch (e) {
     Fluttertoast.showToast(msg: e.toString());
-    // Navigator.pop(context);
-    // Navigator.push(context, MaterialPageRoute(builder: (context) {
-    //   return LoginPage(
-    //     fromMain: false,
-    //   );
-    // }));
   }
 }
 
 Response? handleResponse(Response response, BuildContext context) {
   if (response.statusCode == 200) {
-
+    int? errCode = response.data["errCode"];
+    if(errCode==2002){
+      context.read<LoginState>().requestError();
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return LoginPage(fromMain: false);
+      }));
+      return response;
+    }
     String? msg = response.data["errMsg"];
     if (null != msg && msg.isNotEmpty) {
-      print(response.data);
       throw Exception(msg);
     }
     msg = response.data["msg"];
     if (null != msg && msg.isNotEmpty) {
-      print(response.data);
       throw Exception(msg);
     }
     return response;

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_ykt/custom/widgets/custom_appbar.dart';
+import 'package:flutter_ykt/common/widgets/custom_appbar.dart';
 import 'package:flutter_ykt/ykt/pages/course_learn_page.dart';
 import '../service/http_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,13 +39,12 @@ class CertDetailState extends State<CertDetailPage> {
         children: <Widget>[
           Expanded(
             child: FutureBuilder(
-              future:
-                  post(context,'getCertDetail', formData: {'cert_id': widget.cert_id}),
+              future: post(context, 'getCertDetail',
+                  formData: {'cert_id': widget.cert_id}),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var rsp = json.decode(snapshot.data.toString());
                   var data = rsp['data'];
-                  print(data);
                   return ListView(
                     shrinkWrap: true,
                     children: <Widget>[
@@ -56,7 +55,7 @@ class CertDetailState extends State<CertDetailPage> {
                     ],
                   );
                 } else {
-                  return Text('加载中...');
+                  return const Text('加载中...');
                 }
               },
             ),
@@ -68,10 +67,10 @@ class CertDetailState extends State<CertDetailPage> {
   }
 
   Widget bottom() {
-    var r18 = Radius.circular(18);
+    var r18 = const Radius.circular(18);
     return Container(
       height: 48,
-      padding: EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.only(right: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
 //        crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,7 +84,7 @@ class CertDetailState extends State<CertDetailPage> {
                   width: 16,
                   height: 16,
                 ),
-                Text('咨询')
+                const Text('咨询')
               ],
             ),
           ),
@@ -94,17 +93,12 @@ class CertDetailState extends State<CertDetailPage> {
             height: 36,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                borderRadius:
-                    new BorderRadius.only(topLeft: r18, bottomLeft: r18),
+                borderRadius: BorderRadius.only(topLeft: r18, bottomLeft: r18),
                 color: Colors.blue),
             child: InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CourseLearnPage(
-                    cert_id: widget.cert_id,
-                    isAudition: true,
-                    isContinue: false,
-                  );
+                  return CourseLearnPage(false, true, widget.cert_id);
                 }));
               },
               child: const Text(
@@ -140,7 +134,7 @@ class CertDetailState extends State<CertDetailPage> {
       child: Row(
         children: <Widget>[
           CachedNetworkImage(
-            imageUrl:data['picture'],
+            imageUrl: data['picture'],
             width: 80,
             height: 120,
           ),
@@ -188,7 +182,7 @@ class CertDetailState extends State<CertDetailPage> {
                 children: <Widget>[
                   Text(
                     data['days'],
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   const Text(
                     '课程有效期',
@@ -201,8 +195,8 @@ class CertDetailState extends State<CertDetailPage> {
               width: (MediaQuery.of(context).size.width - 12.0) / 3,
               child: Column(
                 children: <Widget>[
-                  Text(data['lecture'].toString() + "节"),
-                  Text('课时')
+                  Text("${data['lecture']}节"),
+                  const Text('课时')
                 ],
               ),
             ),
@@ -223,7 +217,8 @@ class CertDetailState extends State<CertDetailPage> {
 
   Widget certInfo3(dynamic data) {
     return Container(
-        decoration: const BoxDecoration(color: Color.fromRGBO(0xFE, 0xFE, 0xF4, 1.0)),
+        decoration:
+            const BoxDecoration(color: Color.fromRGBO(0xFE, 0xFE, 0xF4, 1.0)),
         margin: const EdgeInsets.only(left: 12, right: 12, top: 6),
         padding: const EdgeInsets.all(6),
         child: Column(
@@ -251,7 +246,7 @@ class CertDetailState extends State<CertDetailPage> {
         shrinkWrap: true,
         itemCount: pictures.length,
         itemBuilder: (context, index) {
-          return CachedNetworkImage(imageUrl:pictures[index].toString());
+          return CachedNetworkImage(imageUrl: pictures[index].toString());
         });
   }
 }

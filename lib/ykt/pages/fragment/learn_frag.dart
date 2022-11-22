@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:flutter_ykt/ykt/pages/widget/learn_frag_item_lv1.dart';
 import 'package:flutter_ykt/ykt/util/ui_util.dart';
 import 'package:provider/provider.dart';
-import '../../../main.dart';
 import '../../config/color.dart';
-import '../../config/http_conf.dart';
 import '../../service/http_service.dart';
 import 'package:flutter/material.dart';
 
@@ -70,11 +68,8 @@ class _LearnPageState extends State<LearnPage>
   void initCerts() async {
     await post(context, "getCertListForLearn",
         formData: {'user_ticket': token}).then((snapshot){
-      var root = json.decode(snapshot.toString());
+        var root = json.decode(snapshot.toString());
 
-      if(hasError( context,root: root)){
-
-      }else{
         // context.read<LearnState>().getCertsSuccess(root['data']);
         setState(() {
           certs = root['data'];
@@ -90,7 +85,6 @@ class _LearnPageState extends State<LearnPage>
             });
           });
         });
-      }
     });
   }
 
@@ -122,24 +116,19 @@ class _LearnPageState extends State<LearnPage>
   initLectures(String cert_id){
     post(context, 'getCourseInfo',
         formData: {'user_ticket': token, 'cert_id': cert_id}).then((snapshot){
-          var root = json.decode(snapshot.toString());
-          if(hasError(context, root: root)){
-
-          }else{
-            print(root);
+            var root = json.decode(snapshot.toString());
             setState(() {
               data = root['data'];
               courseInfo.putIfAbsent(cert_id.toString(),(){return data;});
               lectures = data['lectureInfo'];
               last_learn_course_id = int.parse(data['last_learn_course_id']);
             });
-          }
     });
   }
   String? cert_id;
   Widget _tabBarView(List? certs,String? cert_id,int index) {
     if(certs==null){
-      return Text('placeholder');
+      return const Text('placeholder');
     }
     dynamic item = certs[index];
     cert_id = item['cert_id'];
@@ -148,7 +137,7 @@ class _LearnPageState extends State<LearnPage>
 
     if(data==null){
       initLectures(cert_id!);
-      return Text('加载失败');
+      return const Text('加载失败');
     }else{
       // data = json.decode(dataGson);
       lectures = data['lectureInfo'];
@@ -173,7 +162,7 @@ class _LearnPageState extends State<LearnPage>
               tabs: createTabs(certs),
             )),
         Container(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           width: 48,
           height: 48,
           child: InkWell(
@@ -187,7 +176,7 @@ class _LearnPageState extends State<LearnPage>
 
   Widget learnHead(item) {
     var style =
-        TextStyle(fontSize: 13, color: Color.fromRGBO(252, 245, 226, 1));
+        const TextStyle(fontSize: 13, color: Color.fromRGBO(252, 245, 226, 1));
 
     isContinue = item['cert_continue'] == 1;
     if (isContinue) {
@@ -213,7 +202,7 @@ class _LearnPageState extends State<LearnPage>
               left: 12,
               child: Text(
                 name.substring(0, index2),
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
             Positioned(
@@ -221,7 +210,7 @@ class _LearnPageState extends State<LearnPage>
               left: 12,
               child: Text(
                 name.substring(index2, name.length),
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
             Positioned(
@@ -243,52 +232,40 @@ class _LearnPageState extends State<LearnPage>
           ],
         ),
         Padding(
-          padding: EdgeInsets.only(top: 12, bottom: 12),
+          padding: const EdgeInsets.only(top: 12, bottom: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
 //          crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     width: 36,
                     height: 36,
                     child: Image.asset('images/ic_test.png'),
                   ),
-                  Text('测试')
+                  const Text('测试')
                 ],
               ),
               Column(
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     width: 36,
                     height: 36,
                     child: Image.asset('images/ic_exam.png'),
                   ),
-                  Text('考试')
+                  const Text('考试')
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 36,
                     height: 36,
 //                  child:  Image.asset('images/learn_head_ceshi.png'),
-                  )
-//                ,
-//                Text('测试')
-                ],
               ),
-              Column(
-                children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 48,
                     height: 48,
 //                  child: Image.asset('images/kaoshi.png') ,
-                  )
-//                ,
-//                Text('考试')
-                ],
               ),
             ],
           ),
@@ -306,7 +283,6 @@ class _LearnPageState extends State<LearnPage>
         SliverList(
           delegate: SliverChildBuilderDelegate(
                 (context, index) {
-              print(lectures);
               return LearnFragItemLV1(
                 index: index,
                 cert_id: cert_id,

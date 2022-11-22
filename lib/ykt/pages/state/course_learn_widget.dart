@@ -23,12 +23,10 @@ class CourseLearnStateWidget extends InheritedWidget {
 
 class CourseLearnState {
   // String expand_id;
+
   String playing_id;
 
 
-  CourseLearnState({required this.playing_id});
+  CourseLearnState(this.playing_id);
 
-  CourseLearnState copyWith({ String? playing_id}) {
-    return CourseLearnState(playing_id: playing_id ?? this.playing_id);
-  }
 }

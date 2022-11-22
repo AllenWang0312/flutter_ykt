@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_ykt/ykt/config/http_conf.dart';
 import 'package:flutter_ykt/ykt/pages/index_page.dart';
 import 'package:flutter_ykt/ykt/pages/login_page.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
@@ -19,13 +18,13 @@ class SplashPage extends StatefulWidget {
   }
 }
 
-class _SplashState extends State<SplashPage>
-    // with WidgetsBindingObserver
+class _SplashState extends State<SplashPage> // with WidgetsBindingObserver
 {
-  String _cover = 'https://img-md.veimg.cn/meadincms/img1/21/2021/0119/1703252.jpg';
+  String _cover =
+      'https://img-md.veimg.cn/meadincms/img1/21/2021/0119/1703252.jpg';
   String _clickUrl = '';
   Timer? _countdownTimer;
-  int _countdownNum = 5;
+  int _countdownNum = 3;
   SharedPreferences? sp;
 
   bool canSkip = false;
@@ -62,9 +61,9 @@ class _SplashState extends State<SplashPage>
       body: Stack(
         children: <Widget>[
           ConstrainedBox(
-            constraints: BoxConstraints.expand(),
+            constraints: const BoxConstraints.expand(),
             child: InkWell(
-              onTap: (){
+              onTap: () {
                 _countdownTimer?.cancel();
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return WebViewPage(title: '更多', url: _clickUrl);
@@ -73,7 +72,8 @@ class _SplashState extends State<SplashPage>
               child: CachedNetworkImage(
                 fit: BoxFit.fill,
                 imageUrl: _cover,
-                placeholder: (context, url)=>Image.asset('images/splash_bg.png'),
+                placeholder: (context, url) =>
+                    Image.asset('images/splash_bg.png'),
               ),
             ),
           ),
@@ -83,18 +83,22 @@ class _SplashState extends State<SplashPage>
                 minimum: const EdgeInsets.all(12),
                 child: Visibility(
                   visible: canSkip,
-                  child: Container(
-                    alignment: Alignment.center,
-                    constraints: const BoxConstraints(
-                        minWidth: 24, maxHeight: 24, maxWidth: 64),
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(12.0)),
-                    ),
-                    child: Text(
-                      '跳过(${_countdownNum}s)',
-                      style: const TextStyle(color: Colors.white),
+                  child: InkWell(
+                    onTap: () {
+                      jump(token.toString());
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      constraints: const BoxConstraints(
+                          minWidth: 24, maxHeight: 24, maxWidth: 64),
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      ),
+                      child: Text(
+                        '跳过(${_countdownNum}s)',
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
@@ -104,9 +108,8 @@ class _SplashState extends State<SplashPage>
     );
   }
 
-
   @override
-  void initState(){
+  void initState() {
     if (kDebugMode) {
       print('initState');
     }
@@ -123,6 +126,7 @@ class _SplashState extends State<SplashPage>
     }
     super.didUpdateWidget(oldWidget);
   }
+
   @override
   void reassemble() {
     if (kDebugMode) {
@@ -130,6 +134,7 @@ class _SplashState extends State<SplashPage>
     }
     super.reassemble();
   }
+
   @override
   void deactivate() {
     if (kDebugMode) {
@@ -137,6 +142,7 @@ class _SplashState extends State<SplashPage>
     }
     super.deactivate();
   }
+
   @override
   void dispose() {
     if (kDebugMode) {
@@ -148,6 +154,7 @@ class _SplashState extends State<SplashPage>
     _countdownTimer = null;
     super.dispose();
   }
+
   @override
   void didChangeDependencies() {
     if (kDebugMode) {
@@ -156,19 +163,19 @@ class _SplashState extends State<SplashPage>
     super.didChangeDependencies();
   }
 
-
   void getBanner() async {
     await get(context, 'getBannerData').then((snapshot) {
       var value = json.decode(snapshot.toString());
       String newUrl = value['data'][0]['imageurl'];
       _clickUrl = value['data'][0]['linkurl'];
-      if(newUrl!=_cover){
+      if (newUrl != _cover) {
         setState(() {
           _cover = newUrl;
         });
       }
     });
   }
+
   void tokenLogin() async {
     sp ??= await SharedPreferences.getInstance();
     String token = sp?.getString("token") ?? "";
@@ -179,11 +186,10 @@ class _SplashState extends State<SplashPage>
       context.read<LoginState>().loginSuccess(token);
       await post(context, 'tokenLogin', formData: {"user_ticket": token})
           .then((snapshot) {
-            if(hasError( context,snapshot: snapshot)){
-              context.read<LoginState>().requestError();
-            }else{
-              context.read<LoginState>().loginSuccess(token);
-            }
+        // if(hasError( context,snapshot)){
+        // }else{
+        context.read<LoginState>().loginSuccess(token);
+        // }
         reSetCountdown();
       });
     } else {
@@ -204,17 +210,27 @@ class _SplashState extends State<SplashPage>
           } else {
             _countdownTimer?.cancel();
             _countdownTimer = null;
-            jump();
+            jump(token.toString());
           }
         });
       });
     });
   }
-  void jump() async {
-    sp ??= await SharedPreferences.getInstance();
-    String token = sp?.getString("token") ?? "";
+
+  String _token = "";
+  Future<String?> get token async {
+    if (_token.isEmpty) {
+      sp ??= await SharedPreferences.getInstance();
+      _token = sp?.getString("token") ?? "";
+    }
+    return _token;
+  }
+
+  // ignore: use_build_context_synchronously
+  void jump(String? token) {
     Navigator.pop(context);
-    if (token.isNotEmpty) {
+    if (null!=token&&token.isNotEmpty) {
+      // ignore: use_build_context_synchronously
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return IndexPage(
           class_id: 0,

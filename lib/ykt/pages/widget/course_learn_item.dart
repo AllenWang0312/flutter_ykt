@@ -52,7 +52,7 @@ class CourseLearnItem extends StatelessWidget {
           .map((item) => InkWell(
         onTap: () => {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CourseLearnPage(cert_id: cert_id,isAudition: false,isContinue: false,);
+            return CourseLearnPage(false, false,cert_id);
           }))
         },
         child: Container(

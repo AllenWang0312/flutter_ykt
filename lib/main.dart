@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ykt/ykt/pages/index_page.dart';
+import 'package:flutter_ykt/ykt/pages/login_page.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
 import './ykt/splash_page.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +12,8 @@ void main() {
       MultiProvider(providers: [
         ChangeNotifierProvider(create: (_) => LoginState())
       ],
-      child: MyApp(),)
-      );
+        child: MyApp(),)
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -42,16 +44,27 @@ class MyApp extends StatelessWidget {
     return
       // LoginStateWidget(
       // data: LoginState(),
-       MaterialApp(
-        theme: ThemeData(backgroundColor: Colors.black), home:
-      SplashPage(),
-        // IndexPage(class_id: 0,class_name: '',count: 0,),
-        navigatorObservers: [MyNavObserver()],
-    ) ;
+      OrientationBuilder(
+        builder: (BuildContext context, Orientation ori) {
+          if (ori.name == Orientation.landscape) {
+            print("Orientation Changed"+context.size!.width.toString());
+          }
+          return MaterialApp(
+            theme: ThemeData(backgroundColor: Colors.black), home:
+          SplashPage(),
+            routes: <String, WidgetBuilder>{
+              "home": (context) => IndexPage(),
+              "login": (context) => LoginPage(fromMain: false)
+            },
+            // IndexPage(class_id: 0,class_name: '',count: 0,),
+            navigatorObservers: [MyNavObserver()],
+          );
+        },
+      );
   }
 }
 
-class MyNavObserver  extends NavigatorObserver{
+class MyNavObserver extends NavigatorObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
@@ -66,6 +79,7 @@ class MyNavObserver  extends NavigatorObserver{
   void didRemove(Route route, Route? previousRoute) {
     super.didRemove(route, previousRoute);
   }
+
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
     super.didReplace();

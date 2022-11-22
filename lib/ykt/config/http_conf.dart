@@ -36,40 +36,35 @@ Map<String,String> servicePath = {
 const h5_host = "https://special.9first.com";
 const know_more = "$h5_host/special/9first_app/h5/more/";
 
-bool hasError(BuildContext context,{dynamic snapshot,dynamic root}) {
-  if(null==snapshot&&null==root){
+bool hasError(BuildContext context,dynamic snapshot) {
+  if(null==snapshot){
     return true;
   }
-  if(null!=snapshot){
-    print(snapshot);
-    root = json.decode(snapshot.toString());
-  }
-  if(null!=root){
-    print(root);
-  }
   var hasError = false;
-  if(root['status']=='1'&&root['data']!=null){
+  if(snapshot['data']!=null){
     return false;
   }
-  String? errCodeStr = root['errCode'];
+  if(snapshot['status']=='1'){
+    return false;
+  }
+  dynamic errCodeStr = snapshot['errCode'];
   if (null != errCodeStr) {
-    if('2002'==errCodeStr){
+    if(2002==int.parse(errCodeStr)||errCodeStr.toString()=="2002"){
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LoginPage(fromMain: false);
       }));
       return true;
     }
-    int? errCode = int.parse(errCodeStr);
-    var errMsg = root['errMsg'];
-    if (null != errMsg && errMsg.toString().isNotEmpty||root['data']==null) {
+    var errMsg = snapshot['errMsg'];
+    if (null != errMsg && errMsg.toString().isNotEmpty||snapshot['data']==null) {
       Fluttertoast.showToast(msg: errMsg??"data is null");
       hasError = true;
     }
     if (kDebugMode) {
-      print("errCode:${errCode!=null?errCode.toString():"Null"}");
+      print("errCode:${errCodeStr!=null?errCodeStr.toString():"Null"}");
     }
   }
-  var status = root['status'];
+  var status = snapshot['status'];
   if (status != 1) {
     hasError = true;
   }

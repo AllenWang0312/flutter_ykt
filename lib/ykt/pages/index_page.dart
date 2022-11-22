@@ -1,25 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_ykt/ykt/pages/login_page.dart';
-import 'package:flutter_ykt/ykt/pages/state/learn_state_provider.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
 import 'package:provider/provider.dart';
-import '../../main.dart';
 import '../config/index.dart';
-import '../service/http_service.dart';
 import 'fragment/home_frag.dart';
 import 'fragment/learn_frag.dart';
 import 'fragment/mine_frag.dart';
 
 class IndexPage extends StatefulWidget {
-  int class_id = 0;
-  int count = 0;
-  String class_name;
+  int? class_id = 0;
+  int? count = 0;
+  String? class_name;
 
 
 
-  IndexPage({super.key, required this.class_id, required this.class_name, required this.count});
+  IndexPage({this.class_id, this.class_name, this.count });
 
   @override
   State<StatefulWidget> createState() => IndexState();

@@ -1,7 +1,7 @@
-import '../../custom/widgets/custom_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:flutter_ykt/common/widgets/custom_appbar.dart';
 
 
 class WebViewPage extends StatefulWidget {
