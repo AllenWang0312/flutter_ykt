@@ -8,7 +8,8 @@ import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_ykt/ykt/pages/widget/course_learn_item_lv1.dart';
 import 'package:flutter_ykt/ykt/service/http_service.dart';
-import 'package:flutter_ykt/ykt/util/ui_util.dart';
+
+import '../../common/util/ui_util.dart';
 
 // ignore: must_be_immutable
 class CourseLearnPage extends StatefulWidget {
@@ -122,7 +123,7 @@ class _CourseLearnPageState extends State<CourseLearnPage>
   String? _token;
 
   String? get token {
-    _token ??= context.watch<LoginState>().token;
+    _token ??= context.watch<LoginStateProvider>().token;
     return _token;
   }
 
@@ -159,39 +160,11 @@ class _CourseLearnPageState extends State<CourseLearnPage>
               data: _data,
               child: Column(
                 children: [
-                  SafeArea(
-                    child:
-                    AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child:
-                      // "0" == playing_id
-                      //     ? Container(
-                      //         color: Colors.green[200],
-                      //       )
-                      //     :
-                          // VideoPlayer(_controller),
-                          VideoPlayerUI.network(
-                              url: this.url,
-                              height: double.infinity,
-                              width: double.infinity,
-                              title: this.title),
-                      // ControllerWidget(
-                      //     controlKey: _key,
-                      //     controller: _controller,
-                      //     videoInit: _videoInit,
-                      //     title: widget.title,
-                      //     child: VideoPlayerPan(
-                      //       child: Container(
-                      //         alignment: Alignment.center,
-                      //         width: double.infinity,
-                      //         height: double.infinity,
-                      //         color: Colors.black,
-                      //         child: _isVideoInit(),
-                      //       ),
-                      //     ),
-                      //   )
-                    ),
-                  ),
+                  VideoPlayerUI.network(
+                      url: this.url,
+                      height: 240,
+                      width: double.infinity,
+                      title: this.title),
                   Expanded(
                     child: ListView.builder(
                       itemBuilder: (context, index) {

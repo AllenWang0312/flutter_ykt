@@ -24,12 +24,13 @@ class MyMediaPlayer extends StatefulWidget {
   String? url = "";
 
   MyMediaPlayer(this.child,
-      {this.title, this.url,
-        // this.uiClickListener,
-        this.lastCallback,
-        this.nextCallback,
-        this.fullScreenCallback,
-        this.isFullScreen});
+      {this.title,
+      this.url,
+      // this.uiClickListener,
+      this.lastCallback,
+      this.nextCallback,
+      this.fullScreenCallback,
+      this.isFullScreen});
 
   @override
   MyMediaPlayerState createState() => MyMediaPlayerState();
@@ -150,9 +151,10 @@ class MyMediaPlayerState extends State<MyMediaPlayer> {
     //   ],
     // );
   }
+
   @override
   void dispose() {
-    if(null!=widget.isFullScreen&&widget.isFullScreen!){
+    if (null != widget.isFullScreen && widget.isFullScreen!) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
@@ -161,7 +163,7 @@ class MyMediaPlayerState extends State<MyMediaPlayer> {
   }
 
   Widget getFullScreenIcon(bool? isFullScreen) {
-    if (null != isFullScreen && isFullScreen!) {
+    if (null != isFullScreen && isFullScreen) {
       return const Icon(
         Icons.fullscreen_exit,
         color: Colors.white,

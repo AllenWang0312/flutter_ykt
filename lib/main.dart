@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ykt/todo/pages/todo_menu_page.dart';
 import 'package:flutter_ykt/ykt/pages/index_page.dart';
 import 'package:flutter_ykt/ykt/pages/login_page.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
@@ -9,10 +10,11 @@ bool PROXY = false;
 
 void main() {
   runApp(
-      MultiProvider(providers: [
-        ChangeNotifierProvider(create: (_) => LoginState())
-      ],
-        child: MyApp(),)
+      Todo()
+  //     MultiProvider(
+  //   providers: [ChangeNotifierProvider(create: (_) => LoginStateProvider())],
+  //   child: MyApp(),
+  // )
   );
 }
 
@@ -42,25 +44,28 @@ class MyApp extends StatelessWidget {
     // );
 
     return
-      // LoginStateWidget(
-      // data: LoginState(),
-      OrientationBuilder(
-        builder: (BuildContext context, Orientation ori) {
-          if (ori.name == Orientation.landscape) {
-            print("Orientation Changed"+context.size!.width.toString());
-          }
-          return MaterialApp(
-            theme: ThemeData(backgroundColor: Colors.black), home:
-          SplashPage(),
-            routes: <String, WidgetBuilder>{
-              "home": (context) => IndexPage(),
-              "login": (context) => LoginPage(fromMain: false)
-            },
-            // IndexPage(class_id: 0,class_name: '',count: 0,),
-            navigatorObservers: [MyNavObserver()],
-          );
-        },
-      );
+        // LoginStateWidget(
+        // data: LoginState(),
+        OrientationBuilder(
+      builder: (BuildContext context, Orientation ori) {
+        if (ori.name == Orientation.landscape) {
+          print("Orientation Changed" + context.size!.width.toString());
+        }
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(backgroundColor: Colors.black),
+          home: TodoMenuPage(),
+          routes: <String, WidgetBuilder>{
+            //至少注册 原生通过 setInitialRoute 进入的页面
+            "/ykt/splash": (context) => SplashPage(),
+            "/ykt/home": (context) => IndexPage(),
+            "/ykt/login": (context) => LoginPage(fromMain: false),
+          },
+          // IndexPage(class_id: 0,class_name: '',count: 0,),
+          navigatorObservers: [MyNavObserver()],
+        );
+      },
+    );
   }
 }
 
@@ -93,5 +98,31 @@ class MyNavObserver extends NavigatorObserver {
   @override
   void didStopUserGesture() {
     super.didStopUserGesture();
+  }
+}
+
+class Todo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.red,
+          primaryColorDark: Colors.black,
+          primaryColorLight: Colors.white,
+      // primaryTextTheme: ,
+      // textTheme: const TextTheme(titleMedium: TextStyle(
+      //     fontSize: 16,
+      //     color: Colors.white
+      // ))
+        ),
+      home: TodoMenuPage(),
+      routes: <String, WidgetBuilder>{
+        //至少注册 原生通过 setInitialRoute 进入的页面
+        "/todo/home": (context) => TodoMenuPage()
+      },
+      // IndexPage(class_id: 0,class_name: '',count: 0,),
+      navigatorObservers: [MyNavObserver()],
+    );
   }
 }

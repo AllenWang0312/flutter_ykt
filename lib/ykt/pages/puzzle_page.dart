@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
 
 class PuzzlePage extends StatefulWidget {
   @override
@@ -57,7 +56,7 @@ class TallyTransformer implements StreamTransformer {
   @override
   Stream bind(Stream stream) {
     stream.listen((event) {
-      if(null!=event)sum += (event as int);
+      if (null != event) sum += (event as int);
       _controller.add(sum);
     });
     return _controller.stream;
@@ -68,7 +67,7 @@ class TallyTransformer implements StreamTransformer {
 }
 
 class KeyPad extends StatelessWidget {
- late StreamController _controller;
+  late StreamController _controller;
 
   KeyPad(StreamController controller) {
     _controller = controller;
@@ -123,7 +122,7 @@ class _PuzzleState extends State<Puzzle> with SingleTickerProviderStateMixin {
     a = Random().nextInt(5) + 1;
     b = Random().nextInt(5);
     x = Random().nextDouble() * 300;
-    color = Colors.primaries[Random().nextInt(Colors.primaries.length)]![200]!;
+    color = Colors.primaries[Random().nextInt(Colors.primaries.length)][200]!;
 
     _controller.duration =
         Duration(milliseconds: Random().nextInt(5000) + 5000);

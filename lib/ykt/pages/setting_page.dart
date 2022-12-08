@@ -19,14 +19,14 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
       appBar: CustomAppbar(
         leadingWidget: InkWell(
-          child: Icon(Icons.arrow_back),
+          child: const Icon(Icons.arrow_back),
           onTap: (){Navigator.pop(context);}
         ),
         title: "设置",
       ),
       body: Column(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 48,
             child: Row(),
           )

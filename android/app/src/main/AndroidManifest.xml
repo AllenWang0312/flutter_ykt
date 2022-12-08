@@ -4,17 +4,21 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".App"
+        android:name="edu.tjrac.swant.App"
         android:icon="@mipmap/logo_normal"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:label="先之云课堂">
+        android:label="先之云课堂"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".AndroidNativeActivity"
-            android:exported="true"
-            >
+            android:name="edu.tjrac.swant.IndexActivity"
+            android:exported="true">
         </activity>
+
         <activity
-            android:name=".ChannelFlutterActivity"
+            android:name="edu.tjrac.swant.FlutterFragmentActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="edu.tjrac.swant.FlutterChannelActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"
@@ -30,15 +34,10 @@
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name="io.flutter.embedding.android.FlutterActivity"

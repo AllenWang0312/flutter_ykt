@@ -10,7 +10,7 @@ import 'controller_widget.dart';
 import 'video_player_slider.dart';
 
 class VideoPlayerControl extends StatefulWidget {
-  VideoPlayerControl({super.key});
+  const VideoPlayerControl({super.key});
 
   @override
   VideoPlayerControlState createState() => VideoPlayerControlState();
@@ -21,8 +21,8 @@ class VideoPlayerControlState extends State<VideoPlayerControl> {
   bool get videoInit => ControllerWidget.of(context)!.videoInit;
   String get title=>ControllerWidget.of(context)!.title;
   // 记录video播放进度
-  Duration _position = Duration(seconds: 0);
-  Duration _totalDuration = Duration(seconds: 0);
+  Duration _position = const Duration(seconds: 0);
+  Duration _totalDuration = const Duration(seconds: 0);
   Timer? _timer; // 计时器，用于延迟隐藏控件ui
   bool _hidePlayControl = true; // 控制是否隐藏控件ui
   double _playControlOpacity = 0; // 通过透明度动画显示/隐藏控件ui

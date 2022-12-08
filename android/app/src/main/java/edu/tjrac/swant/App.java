@@ -1,4 +1,6 @@
-package edu.tjrac.swant.flutter_ykt_3;
+package edu.tjrac.swant;
+
+import static edu.tjrac.swant.FlutterChannelActivity.FLAG_DEFAULT_FLUTTER_ENGINE;
 
 import android.app.Application;
 
@@ -14,7 +16,7 @@ public class App extends Application {
         super.onCreate();
         flutterEngine = new FlutterEngine(this);
         FlutterEngineCache.getInstance()
-                .put("flutterEngine", flutterEngine);
+                .put(FLAG_DEFAULT_FLUTTER_ENGINE, flutterEngine);
     }
 
     @Override

@@ -6,8 +6,7 @@ import 'controller_widget.dart';
 import 'video_player_control.dart';
 
 class VideoPlayerPan extends StatefulWidget {
-  VideoPlayerPan({
-//    this.controlKey,
+  const VideoPlayerPan({super.key,
     required this.child,
   });
 
@@ -35,6 +34,10 @@ class _VideoPlayerPanState extends State<VideoPlayerPan>
   bool get videoInit => ControllerWidget.of(context)!.videoInit;
   String get title=>ControllerWidget.of(context)!.title;
 
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   void afterFirstLayout(BuildContext context) {
     _reset(context);

@@ -33,8 +33,19 @@ Map<String,String> servicePath = {
 //  'getUserInfo':base_url+'mv2/user/info/detail',
 };
 
-const h5_host = "https://special.9first.com";
-const know_more = "$h5_host/special/9first_app/h5/more/";
+const H5 = "https://special.9first.com";
+const know_more = "$H5/special/9first_app/h5/more/";
+
+const DOWNLOAD_URL = "$H5/893.html";
+const POINTS_RULES = "$H5/892.html";
+const POINTS_APPLY_RULES = "$H5/882.html";
+const REGIST_GUIDE_URL = "$H5/883.html";
+const PURCHASE_NOTE_URL = "$H5/884.html";
+const FORGET_PASSWORD_URL = "$H5/880.html";
+const HELP_CENTER_URL = "$H5/879.html";
+const WHAT_IS_SCORE_URL = "$H5/891.html";
+const ID_CAED_EXAMPLE = "$H5/976.html";
+const MORE = "$H5/886.html";
 
 bool hasError(BuildContext context,dynamic snapshot) {
   if(null==snapshot){

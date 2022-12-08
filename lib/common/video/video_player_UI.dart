@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-
-// import 'package:screen/screen.dart';
 import 'package:video_player/video_player.dart';
 import 'controller_widget.dart';
 import 'video_player_control.dart';

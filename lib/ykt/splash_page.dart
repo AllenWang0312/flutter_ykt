@@ -66,7 +66,7 @@ class _SplashState extends State<SplashPage> // with WidgetsBindingObserver
               onTap: () {
                 _countdownTimer?.cancel();
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return WebViewPage(title: '更多', url: _clickUrl);
+                  return WebViewPage('更多',_clickUrl);
                 }));
               },
               child: CachedNetworkImage(
@@ -180,15 +180,15 @@ class _SplashState extends State<SplashPage> // with WidgetsBindingObserver
     sp ??= await SharedPreferences.getInstance();
     String token = sp?.getString("token") ?? "";
     if (kDebugMode) {
-      print('initState ${token}');
+      print('token ${token}');
     }
     if (token.isNotEmpty) {
-      context.read<LoginState>().loginSuccess(token);
+      context.read<LoginStateProvider>().loginSuccess(token);
       await post(context, 'tokenLogin', formData: {"user_ticket": token})
           .then((snapshot) {
         // if(hasError( context,snapshot)){
         // }else{
-        context.read<LoginState>().loginSuccess(token);
+        context.read<LoginStateProvider>().loginSuccess(token);
         // }
         reSetCountdown();
       });

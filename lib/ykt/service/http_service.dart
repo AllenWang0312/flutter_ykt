@@ -30,6 +30,9 @@ Future<Response?> get(context, key, {formData}) async {
         print("get:$formData");
       }
     }
+    if (kDebugMode) {
+      print("get:$response");
+    }
     return handleResponse(response, context);
   } catch (e) {
     Fluttertoast.showToast(msg: e.toString());
@@ -59,6 +62,9 @@ Future<Response?> post(context, key, {formData}) async {
         print("post:${formData}");
       }
     }
+    if (kDebugMode) {
+      print("get:$response");
+    }
     return handleResponse(response, context);
   } catch (e) {
     Fluttertoast.showToast(msg: e.toString());
@@ -68,8 +74,8 @@ Future<Response?> post(context, key, {formData}) async {
 Response? handleResponse(Response response, BuildContext context) {
   if (response.statusCode == 200) {
     int? errCode = response.data["errCode"];
-    if(errCode==2002){
-      context.read<LoginState>().requestError();
+    if (errCode == 2002) {
+      context.read<LoginStateProvider>().requestError();
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LoginPage(fromMain: false);
       }));

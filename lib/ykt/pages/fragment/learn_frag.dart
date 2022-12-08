@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_ykt/ykt/pages/widget/learn_frag_item_lv1.dart';
-import 'package:flutter_ykt/ykt/util/ui_util.dart';
 import 'package:provider/provider.dart';
+import '../../../common/util/ui_util.dart';
 import '../../config/color.dart';
 import '../../service/http_service.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class _LearnPageState extends State<LearnPage>
   String? _token;
 
   String? get token{
-    _token ??= context.watch<LoginState>().token;
+    _token ??= context.watch<LoginStateProvider>().token;
     return _token;
   }
   @override

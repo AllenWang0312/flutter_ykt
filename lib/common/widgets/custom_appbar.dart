@@ -16,7 +16,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
     this.leadingWidget,
     this.trailingWidget,
 
-    this.contentHeight = 48,
+    this.contentHeight = 56,
     this.navigationBarBackgroundColor = Colors.white,
   });
 

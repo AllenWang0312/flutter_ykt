@@ -5,7 +5,7 @@ import 'video_player_control.dart';
 
 class ControllerWidget extends InheritedWidget {
   ControllerWidget(
-      {required this.controlKey,
+      {super.key, required this.controlKey,
       required this.child,
       required this.controller,
       required this.videoInit,

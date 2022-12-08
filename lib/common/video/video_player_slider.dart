@@ -10,7 +10,7 @@ class VideoPlayerSlider extends StatefulWidget {
   final Function? startPlayControlTimer;
   final Timer? timer;
 
-  VideoPlayerSlider({this.startPlayControlTimer, this.timer});
+  const VideoPlayerSlider({super.key, this.startPlayControlTimer, this.timer});
 
   @override
   _VideoPlayerSliderState createState() => _VideoPlayerSliderState();

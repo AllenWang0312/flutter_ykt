@@ -1,9 +1,10 @@
 import 'dart:convert';
-
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_ykt/common/widgets/custom_appbar.dart';
 import 'package:flutter_ykt/ykt/pages/course_learn_page.dart';
+import 'package:flutter_ykt/ykt/pages/webview_page.dart';
 import '../service/http_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,14 @@ class CertDetailState extends State<CertDetailPage> {
           },
         ),
         title: '证书详情',
+        // trailingWidget: InkWell(
+        //   child: const Text("支付条款"),
+        //   onTap: (){
+        //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+        //       return WebViewPage("支付条款",PAY);
+        //     }));
+        //   },
+        // ),
       ),
       body: Column(
         children: <Widget>[
@@ -48,14 +57,22 @@ class CertDetailState extends State<CertDetailPage> {
                   return ListView(
                     shrinkWrap: true,
                     children: <Widget>[
-                      certInfo1(data),
-                      certInfo2(data),
-                      certInfo3(data),
-                      certInfo4(data),
+                      certInfo1(false,data['picture'],data['name'],data['price']),
+                      certInfo2(data['days'],"${data['lecture']}节","${data['enroll']}名"),
+                      certInfo3(data['cert_object'],data['cert_intro']),
+                      certInfo4(data['detail_picture']),
                     ],
                   );
                 } else {
-                  return const Text('加载中...');
+                  return ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      certInfo1(true,"","🟥","🟥"),
+                      certInfo2("🟥","🟥","🟥"),
+                      certInfo3("🟥","🟥"),
+                      certInfo4([""]),
+                    ],
+                  );
                 }
               },
             ),
@@ -127,14 +144,18 @@ class CertDetailState extends State<CertDetailPage> {
     );
   }
 
-  Widget certInfo1(dynamic data) {
+  Widget certInfo1(bool isTemp,String picture,String name,String price) {
     return Container(
       height: 100,
       margin: const EdgeInsets.only(left: 8, top: 4, right: 8),
       child: Row(
         children: <Widget>[
-          CachedNetworkImage(
-            imageUrl: data['picture'],
+          isTemp?Container(
+            color: Colors.grey[200],
+            width: 80,
+            height: 120,
+          ):CachedNetworkImage(
+            imageUrl: picture,
             width: 80,
             height: 120,
           ),
@@ -147,18 +168,18 @@ class CertDetailState extends State<CertDetailPage> {
                   top: 2,
                   left: 2,
                   right: 2,
-                  child: Text(data['name']),
+                  child: Text(name),
                 ),
                 Positioned(
                   left: 2,
                   bottom: 2,
-                  child: Text(data['price']),
+                  child: Text(price),
                 ),
-                const Positioned(
-                  right: 2,
-                  bottom: 2,
-                  child: Text('课程试听'),
-                ),
+                // const Positioned(
+                //   right: 2,
+                //   bottom: 2,
+                //   child: Text('课程试听'),
+                // ),
               ],
             ),
           )
@@ -167,21 +188,20 @@ class CertDetailState extends State<CertDetailPage> {
     );
   }
 
-  Widget certInfo2(dynamic data) {
+  Widget certInfo2(String days,String count,String enroll) {
     return Card(
-      margin: const EdgeInsets.only(left: 6, right: 6, top: 6),
+      margin: const EdgeInsets.only(left: 8,top:8,right: 8),
       child: SizedBox(
         height: 48,
         child: Row(
-//          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+         mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              width: (MediaQuery.of(context).size.width - 12.0) / 3,
+            Center(
               child: Column(
                 children: <Widget>[
                   Text(
-                    data['days'],
+                    days,
                     style: const TextStyle(fontSize: 18),
                   ),
                   const Text(
@@ -191,20 +211,18 @@ class CertDetailState extends State<CertDetailPage> {
                 ],
               ),
             ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width - 12.0) / 3,
+            Center(
               child: Column(
                 children: <Widget>[
-                  Text("${data['lecture']}节"),
+                  Text(count),
                   const Text('课时')
                 ],
               ),
             ),
-            SizedBox(
-              width: (MediaQuery.of(context).size.width - 12.0) / 3,
+            Center(
               child: Column(
                 children: <Widget>[
-                  Text("${data['enroll']}名"),
+                  Text(enroll),
                   const Text('报名人数')
                 ],
               ),
@@ -215,11 +233,11 @@ class CertDetailState extends State<CertDetailPage> {
     );
   }
 
-  Widget certInfo3(dynamic data) {
+  Widget certInfo3(String object,String intro) {
     return Container(
         decoration:
             const BoxDecoration(color: Color.fromRGBO(0xFE, 0xFE, 0xF4, 1.0)),
-        margin: const EdgeInsets.only(left: 12, right: 12, top: 6),
+        margin: const EdgeInsets.only(left: 12, right: 12, top: 6,bottom: 6),
         padding: const EdgeInsets.all(6),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -228,19 +246,17 @@ class CertDetailState extends State<CertDetailPage> {
             const Text('服务'),
             const Text('配套辅助    1v1学习顾问    课程缓存'),
             const Text('适合人群'),
-            Html(
-              data: data['cert_object'],
+            Html(data:object,
             ),
             const Text('证书介绍'),
             Html(
-              data: data['cert_intro'],
+              data: intro,
             ),
           ],
         ));
   }
 
-  Widget certInfo4(data) {
-    List<dynamic> pictures = data['detail_picture'];
+  Widget certInfo4(List<dynamic> pictures) {
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,

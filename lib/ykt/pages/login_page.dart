@@ -85,6 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: psw_controller,
                   maxLength: 30,
                   maxLines: 1,
+                  obscureText: true,
                   autofocus: true,
                   style: TextStyle(fontSize: 16),
                 ),
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
     }).then((snapshot) {
         var value = json.decode(snapshot.toString());
         String token = value['data']['user_ticket'];
-        context.read<LoginState>().loginSuccess(token);
+        context.read<LoginStateProvider>().loginSuccess(token);
         onLoginSuccess(value['data'],token);
     });
   }

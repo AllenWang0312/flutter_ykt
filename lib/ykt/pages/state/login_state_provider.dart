@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
-class LoginState with ChangeNotifier,DiagnosticableTreeMixin{
+class LoginStateProvider with ChangeNotifier,DiagnosticableTreeMixin{
   String _token = '';
   String get token => _token;
 

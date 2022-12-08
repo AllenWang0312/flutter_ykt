@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical"
-    tools:context=".AndroidNativeActivity">
+    tools:context="edu.tjrac.swant.IndexActivity">
 
     <Button
         android:id="@+id/bt"
@@ -19,4 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="打开ChannelFlutterActivity"/>
+    <Button
+        android:id="@+id/bt_ffragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打开带有flutterFragment的Activity"/>
 </LinearLayout>

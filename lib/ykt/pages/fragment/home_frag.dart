@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ykt/common/widgets/banner.dart';
 import 'package:flutter_ykt/common/widgets/custom_appbar.dart';
+import 'package:flutter_ykt/data/banner_response.dart';
 import 'package:flutter_ykt/ykt/pages/cert_detial.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../config/index.dart';
 import '../../service/http_service.dart';
 import '../../config/color.dart';
@@ -49,12 +54,12 @@ class _HomePageState extends State<HomePage>
 
   bool isChangging = false;
   Map<int, Widget> widgetCache = Map();
-  Map<int,List<dynamic>> dataCache = Map();
+  Map<int, List<dynamic>> dataCache = Map();
 
   String? _token;
 
-  String? get token{
-    _token ??= context.watch<LoginState>().token;
+  String? get token {
+    _token ??= context.watch<LoginStateProvider>().token;
     return _token;
   }
 
@@ -86,9 +91,9 @@ class _HomePageState extends State<HomePage>
               future: get(context, 'getBannerData', formData: {"type": 2}),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var data = json.decode(snapshot.data.toString());
-                  List<Map> banners = (data['data'] as List).cast();
-                  return BannerView(banners);
+                  BannerResponse data = BannerResponse.fromJson(
+                      json.decode(snapshot.data.toString()));
+                  return BannerView(data.data);
                 } else {
                   return const SizedBox(
                     height: 180,
@@ -116,9 +121,9 @@ class _HomePageState extends State<HomePage>
                       vsync: this,
                     );
                     mController.addListener(() {
-                      if(isChangging){
+                      if (isChangging) {
                         print("ui is changging");
-                      }else{
+                      } else {
                         setState(() {
                           selectIndex = mController.index;
                           currentTitle = tabs[selectIndex]['name'];
@@ -180,7 +185,8 @@ class _HomePageState extends State<HomePage>
                 padding: const EdgeInsets.only(top: 4, bottom: 2),
                 child: Text(
                   item['name'],
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 )),
             Text(
               item['tag'].toString().replaceAll("、", " | "),
@@ -238,9 +244,7 @@ class _HomePageState extends State<HomePage>
             if (snapshot.hasData) {
               List<dynamic> list =
                   json.decode(snapshot.data.toString())['data'];
-              widgetCache.putIfAbsent(
-                  class_id,
-                  () =>courseList(list));
+              widgetCache.putIfAbsent(class_id, () => courseList(list));
               return widgetCache[class_id]!;
             } else {
               return const Text("加载中");
@@ -257,16 +261,12 @@ class _HomePageState extends State<HomePage>
     } else {
       return FutureBuilder(
           future:
-          post(context, 'getClassList', formData: {"class_id": class_id}),
+              post(context, 'getClassList', formData: {"class_id": class_id}),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<dynamic> list =
-              json.decode(snapshot.data.toString())['data'];
-              widgetCache.putIfAbsent(
-                  class_id,
-                      () =>
-                      courseList(list)
-              );
+                  json.decode(snapshot.data.toString())['data'];
+              widgetCache.putIfAbsent(class_id, () => courseList(list));
               return widgetCache[class_id]!;
             } else {
               return const Text("加载中");
@@ -278,18 +278,16 @@ class _HomePageState extends State<HomePage>
   Widget classList(int index) {
     int class_id = int.parse(tabs[index]['id']);
     return FutureBuilder(
-          future:
-          post(context, 'getClassList', formData: {"class_id": class_id}),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<dynamic> list =
-              json.decode(snapshot.data.toString())['data'];
-                     return courseList(list);
-            } else {
-              return const Text("加载中");
-            }
-          });
-    }
+        future: post(context, 'getClassList', formData: {"class_id": class_id}),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<dynamic> list = json.decode(snapshot.data.toString())['data'];
+            return courseList(list);
+          } else {
+            return const Text("加载中");
+          }
+        });
+  }
 
   Widget courseList(List list) {
     Widget result = ListView.builder(
@@ -302,12 +300,24 @@ class _HomePageState extends State<HomePage>
       shrinkWrap: true, //height warp
       physics: const NeverScrollableScrollPhysics(), //禁止滑动
     );
-    isChangging =false;
+    isChangging = false;
     return result;
   }
+
   static const platform = const MethodChannel('flutter.open.native.page');
-  Future<Null> openNativeWebView(String url) async {
-    final String result = await platform.invokeMethod("edu.tjrac.swant.WebActivity",{'url':url});
+
+
+
+  Future<bool> openNativeWebView(String url) async {
+    if (kIsWeb || Platform.isMacOS || Platform.isWindows) {
+      return await launchUrl(Uri.parse(url));
+    } else if (Platform.isAndroid) {
+      return await platform
+          .invokeMethod("edu.tjrac.swant.FlutterFragmentWrapperActivity", {'moduleName': url,"pageName":url});
+      return await platform
+          .invokeMethod("edu.tjrac.swant.WebActivity", {'url': url});
+    }
+    return false;
   }
 
 // Future<void> initList() async {

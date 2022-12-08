@@ -1,0 +1,26 @@
+{
+  "info": {
+    "id": 4,
+    "name": "任务"
+  },
+  "items": [
+    {
+      "id": 1,
+      "name": "游戏卸载",
+      "targetGroupName": "我的一天",
+      "steps": 5,
+      "hasDoneStep": 1,
+      "star": false,
+      "hasText": false
+    }
+  ],
+  "finished": [
+    {
+      "id": 2,
+      "name": "复习布局约束",
+      "finished": true,
+      "star": true,
+      "hasText": true
+    }
+  ]
+}

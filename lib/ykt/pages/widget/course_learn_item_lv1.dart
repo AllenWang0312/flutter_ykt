@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ykt/ykt/config/color.dart';
-import 'package:flutter_ykt/ykt/pages/course_learn_page.dart';
 import 'package:flutter_ykt/ykt/pages/state/course_learn_widget.dart';
-import 'package:flutter_ykt/ykt/util/time_util.dart';
 
 
 class CourseLearnItemLV1 extends StatefulWidget {

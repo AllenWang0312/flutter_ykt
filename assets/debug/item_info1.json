@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "name": "游戏卸载",
+  "targetGroupName": "我的一天",
+  "steps": 5,
+  "hasDoneStep": 1,
+  "star": false,
+  "hasText": false,
+  "step": ["依盖之书"],
+  "done": ["巫师3","荒野大镖客"]
+}

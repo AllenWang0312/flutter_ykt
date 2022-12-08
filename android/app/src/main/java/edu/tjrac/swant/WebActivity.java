@@ -11,10 +11,10 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-import edu.tjrac.swant.flutter_ykt_3.ChannelFlutterActivity;
 import edu.tjrac.swant.flutter_ykt_3.R;
 
 public class WebActivity extends Activity {
+
     String url = "https://www.baidu.com";
     WebView web;
     ImageView back,right;
@@ -55,7 +55,7 @@ public class WebActivity extends Activity {
         right.setOnClickListener(view->{
             //原生跳flutter 暂时不可用
             startActivity(
-                    new Intent(this, ChannelFlutterActivity.class)
+                    new Intent(this, FlutterChannelActivity.class)
 //                    MainActivity
 //                            .withCachedEngine("flutterEngine")
 //                            .build(this)

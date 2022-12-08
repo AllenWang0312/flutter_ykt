@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ykt/ykt/config/color.dart';
 import 'package:flutter_ykt/ykt/pages/course_learn_page.dart';
 import 'package:flutter_ykt/ykt/pages/state/login_state_provider.dart';
-import 'package:flutter_ykt/ykt/util/dynamic_util.dart';
-import 'package:flutter_ykt/ykt/util/time_util.dart';
 import 'package:provider/provider.dart';
+
+import '../../../common/util/dynamic_util.dart';
+import '../../../common/util/time_util.dart';
 
 class LearnFragItemLV1 extends StatelessWidget {
   int index;
@@ -50,7 +51,7 @@ class LearnFragItemLV1 extends StatelessWidget {
           .map((item) => InkWell(
                 onTap: () => {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MultiProvider(providers: [ChangeNotifierProvider(create: (_) => LoginState())],
+                    return MultiProvider(providers: [ChangeNotifierProvider(create: (_) => LoginStateProvider())],
                     child:CourseLearnPage( false, false,cert_id
                     ));
                   }))
