@@ -1,30 +1,31 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ykt/common/widgets/icon_wrapper.dart';
 
 import '../model/stract/Item.dart';
 
-class DetailPage extends StatefulWidget {
+class DetialPage extends StatefulWidget {
   String groupName;
   Item item;
 
-  DetailPage(this.groupName, this.item);
+  DetialPage(this.groupName, this.item);
 
   @override
-  State<StatefulWidget> createState() => _DetailPageState();
+  State<StatefulWidget> createState() => _DetialPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetialPageState extends State<DetialPage> {
   late Item data;
   List<dynamic>? step;
-  List<dynamic>? done;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    super.initState();
     initData();
+
+    super.initState();
   }
 
   Future<void> initData() async {
@@ -33,13 +34,13 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       data = Item.fromJson(json.decode(str));
       step = data.step;
-      done = data.done;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         leading: InkWell(
           onTap: () => Navigator.pop(context),
@@ -92,6 +93,8 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
+
+
   List<Widget> getChildren() {
     List<Widget> result = [];
     if (null != step) {
@@ -104,22 +107,7 @@ class _DetailPageState extends State<DetailPage> {
         ));
       }
     }
-    if (null != done) {
-      for (int i = 0; i < done!.length; i++) {
-        result.add(SizedBox(
-          height: 48,
-          child: Row(
-            children: [
-              Icon(Icons.done),
-              Text(
-                done![i],
-                style: TextStyle(decoration: TextDecoration.lineThrough),
-              )
-            ],
-          ),
-        ));
-      }
-    }
+
     TextEditingController controller = TextEditingController();
     result.add(InkWell(
       onTap: () {},
@@ -184,11 +172,37 @@ class _DetailPageState extends State<DetailPage> {
       height: 4,
     ));
     result.add(
-      Row(
-        children: [
-          SizedBox(height: 48, width: 48, child: Icon(Icons.attach_file)),
-          Text("添加文件")
-        ],
+      ElevatedButton(
+        onPressed:(){
+          showModalBottomSheet<void>(context: context,builder: (BuildContext context){
+            return Container(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('上传至'),
+                  Row(
+                    children: [
+                      IconWrapper(36, Icons.file_present_outlined, () => null,right: Text("照相机")),
+                      IconWrapper(36, Icons.camera_alt_outlined, () => null,right: Text("照相机"),)
+                    ],
+                  )
+                ],
+              ),
+            );
+          });
+
+          // Scaffold.of(context).showBodyScrim(SnackBar(content: Text('$result'),));
+        } ,
+
+        // showSelectFileBottomSheet,
+        child: Row(
+          children: [
+            SizedBox(height: 48, width: 48, child: Icon(Icons.attach_file)),
+            Text("添加文件")
+          ],
+        ),
       ),
     );
     result.add(Divider(
@@ -203,4 +217,10 @@ class _DetailPageState extends State<DetailPage> {
 
     return result;
   }
+
+  showSelectFileBottomSheet() {
+    // print("showSelectFileBottomSheet");
+
+  }
 }
+//

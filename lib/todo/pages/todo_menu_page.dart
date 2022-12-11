@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ykt/common/after_layout.dart';
 import 'package:flutter_ykt/common/widgets/custom_appbar.dart';
 import 'package:flutter_ykt/common/widgets/custom_dialog.dart';
 import 'package:flutter_ykt/todo/pages/custom_todo_detail_page.dart';
@@ -17,15 +18,21 @@ class TodoMenuPage extends StatefulWidget {
   }
 }
 
-class _TodoMenuState extends State<TodoMenuPage> {
+class _TodoMenuState extends State<TodoMenuPage> with AfterLayoutMixin{
   bool expend = false;
 
   @override
   void initState() {
     super.initState();
-    initData();
   }
-  Future<void> initData() async {
+
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    initData(context);
+  }
+
+  Future<void> initData(BuildContext context) async {
     String str = await DefaultAssetBundle.of(context)
         .loadString("assets/debug/todo_home_info.json");
     setState(() {
@@ -271,4 +278,5 @@ class _TodoMenuState extends State<TodoMenuPage> {
       ),
     );
   }
+
 }

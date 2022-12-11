@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ykt/common/util/array_util.dart';
 import 'package:flutter_ykt/common/widgets/icon_wrapper.dart';
 import 'package:flutter_ykt/todo/model/GroupDetail.dart';
-import 'package:flutter_ykt/todo/pages/detail_page.dart';
+import 'package:flutter_ykt/todo/pages/detial_page.dart';
 
 import '../model/stract/Item.dart';
 import '../model/stract/group.dart';
@@ -95,7 +95,7 @@ class _TodoDetailState extends State<TodoDetailPage> {
           child: InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => DetailPage(widget.info.name, item)));
+                  builder: (_) => DetialPage(widget.info.name, item)));
             },
             child: Row(
               // mainAxisAlignment: MainAxisAlignment.center,

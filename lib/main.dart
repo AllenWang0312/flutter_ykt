@@ -11,9 +11,9 @@ bool PROXY = false;
 void main() {
   runApp(
       Todo()
-  //     MultiProvider(
-  //   providers: [ChangeNotifierProvider(create: (_) => LoginStateProvider())],
-  //   child: MyApp(),
+      // MultiProvider(
+    // providers: [ChangeNotifierProvider(create: (_) => LoginStateProvider())],
+    // child: MyApp(),
   // )
   );
 }
@@ -54,10 +54,9 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(backgroundColor: Colors.black),
-          home: TodoMenuPage(),
+          home: SplashPage(),
           routes: <String, WidgetBuilder>{
             //至少注册 原生通过 setInitialRoute 进入的页面
-            "/ykt/splash": (context) => SplashPage(),
             "/ykt/home": (context) => IndexPage(),
             "/ykt/login": (context) => LoginPage(fromMain: false),
           },
